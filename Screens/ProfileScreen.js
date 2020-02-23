@@ -3,6 +3,7 @@ import {Text,TextInput,StyleSheet,View ,ImageBackground,Platform,ScrollView,Imag
 import Cards from '../Components/Cards';
 import { Rating } from 'react-native-elements';
 import { StrictMode } from 'react';
+import DatepickerRange from 'react-native-range-datepicker';
 
 export default class ProfileScreen extends Component{
 

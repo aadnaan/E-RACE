@@ -4,6 +4,24 @@ import Home from "./Screens/Home"
 import MainNavigator from "./Navigation/MainNavigator"
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
+import BookingDetails from './Screens/BookingDetails'
+import TripsScreen from './Screens/TripsScreen'
+import RequestList from './Components/RequestList.js'
+import ListedTrips from './Components/ListedTrips';
+import BookedDetailsScreen from './Screens/BookedDetailsScreen';
+import RentedDetailsScreen from './Screens/RentedDetailsScreen';
+import RequestDetail from './Screens/RequestDetail';
+
+
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
 
 
 const fetchFonts = () => {
@@ -35,7 +53,14 @@ export default function App() {
   }   
       if(dataLoaded==true){
       return (
+      //<RequestDetail/>
+      //<BookingDetails/>
       <MainNavigator/>
+      //<RequestList/>
+      //<ListedTrips/>
+      //<TripsScreen/>
+      //<BookedDetailsScreen/>
+      //<RentedDetailsScreen/>
     );
     }
   

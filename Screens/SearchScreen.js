@@ -4,8 +4,9 @@ import Cards from '../Components/Cards';
 import { Rating,SearchBar } from 'react-native-elements';
 import { StrictMode } from 'react';
 import SearchList from '../Components/SearchList';
-import {f,auth,database,storage} from '../config/Config.js';
+import {f,auth,database,storage,firestore} from '../config/Config.js';
 import { FontAwesome,Ionicons,MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import firebase from 'firebase';
 
 export default class SearchScreen extends Component{
     constructor(props) {
@@ -54,12 +55,23 @@ export default class SearchScreen extends Component{
     addToFlatList=(car_feed,data,list1)=>{
         var that=this;
         var carobj=data[list1];
+        
         database.ref('cars').child(carobj.carlisted).once('value').then(function(snapshot1){
             const exists=(snapshot1.val()!==null);
             if(exists) eta=snapshot1.val()
             that.addToFlatList2(car_feed,carobj,eta,list1)
         
         }).catch(error=>console.log(error));
+    }
+    addToFlatList1=(car_feed,data)=>{
+        var that=this;
+        console.log(data.UserID)
+        firestore.collection('Users').doc(data.UserID).get().then(doc=>{
+            const exists=(doc.data()!==null)
+            if(exists){
+            console.log(doc.data());            
+        }
+    })
     }
     updateSearch = search => {
         this.setState({ search });
@@ -69,7 +81,22 @@ export default class SearchScreen extends Component{
             refresh:true,
             car_list:[]
         });
+        this.fetchdata(queryvalue)
+    };
+    fetchdata=(queryvalue)=>{
         that=this;
+        firestore.collection('Cars').where('Brand','==',queryvalue).get().then((snapshot)=>{
+            snapshot.docs.forEach(doc => {
+                const exists=(doc.data()!==null)
+                console.log(exists)
+                if(exists){
+                data=doc.data();
+                var car_feed=that.state.car_list;
+                that.addToFlatList1(car_feed,data)
+                console.log(doc.data());
+            }
+        })
+    })
         database.ref('listings').orderByChild('Brand').startAt(queryvalue).endAt(queryvalue+'\uf8ff').once('value').then(function(snapshot){
             const exists=(snapshot.val()!==null);
             var car_feed=that.state.car_list;
@@ -90,7 +117,8 @@ export default class SearchScreen extends Component{
                 }
             
             }).catch(error=>console.log(error));
-    };
+
+    }
     loadNew=()=>{
         this.updateSearch();
     }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TextInput,StyleSheet,View,Button,Text,ScrollView,Image,TouchableHighlight} from 'react-native';
+import {TextInput,StyleSheet,View,Button,Text,ScrollView,Image,TouchableHighlight, Alert,} from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import Cards from '../Components/Cards';
 import { Rating } from 'react-native-elements';
@@ -19,25 +19,106 @@ import platform from '../native-base-theme/variables/platform';
 export default class SelectedCar extends Component{
     constructor(props) {
         super(props);
+        this.setDates = this.setDates.bind(this);
+        this.checkoutHandler = this.checkoutHandler.bind(this);
+        this.showAlert1 = this.showAlert1.bind(this);
         this.state = {
+            startDate:null,
+            endDate:null,
+            daysCalculated:null,
+            checked:false
         };
         }
+        showAlert1() {
+            if(this.state.checked==true){  
+                Alert.alert(  
+                    'Confirmation',  
+                    'Are you sure',  
+                    [  
+                        {  
+                            text: 'Cancel',  
+                            onPress: () => console.log('Cancel Pressed'),  
+                            style: 'cancel',  
+                        },  
+                        {text: 'OK', onPress: () => this.checkoutHandler()},  
+                    ]  
+                );
+            }else{ 
+                Alert.alert(  
+                'Trip dates not selected',  
+                'Please select trip dates first',    
+                [{text: 'OK', onPress: () => console.log('Ok Pressed')},]   
+            );
+            }  
+        }  
         
         customButton = (onConfirm) => (
             
-            <Button
+            <Button1
                 onPress={onConfirm}
-                style={{container:{ width:'30%', marginHorizontal:'3%' }, }}
-                primary
-                title={'Confirm'}
+                type='clear'
+                style={{}}
+                title={'CONFIRM'}
+                titleStyle={{color:'#800080',fontSize:20,fontWeight:'800'}}
             />
             
            
         )
+        async setDates (dates) {
+            var msDiff = new Date(dates.endDate).getTime() - new Date(dates.startDate).getTime();    //Future date - current date
+            var daysCalculated = Math.floor(msDiff / (1000 * 60 * 60 * 24));
+            const currentTimeStamp = new Date().getTime();
+            console.log(currentTimeStamp);
+            await this.setState({
+              startDate:dates.startDate,
+              endDate:dates.endDate,
+              checked:true,
+              daysCalculated:daysCalculated,
+            });
+          };
+        checkoutHandler=()=>{
+            let car_details=this.props.navigation.state.params;
+            tripFee=car_details.RatePerDay*0.1
+            var startDay=new Date(this.state.startDate).getDate()
+            var startMonth=new Date(this.state.startDate).getMonth()
+            var endDay=new Date(this.state.endDate).getDate()
+            var endMonth=new Date(this.state.endDate).getMonth()
+            var Months = ["Jan", "Feb", "Mar","Apr", "May", "Jun","Jul", "Aug", "Sept","Oct", "Nov", "Dec"];
+            var startMonth1=Months[startMonth]
+            var endMonth1=Months[endMonth]
+            this.props.navigation.navigate({
+                routeName:'Fourth',
+                params:{
+                    Lister:car_details.Lister,
+                    ID:car_details.ID,
+                    URL:car_details.URL,
+                    Model:car_details.Model,
+                    Brand:car_details.Brand,
+                    Variant:car_details.Variant,
+                    Year:car_details.Year,
+                    Regno:car_details.Regno,
+                    Rating:car_details.Rating,
+                    NoOfTrips:car_details.NoOfTrips,
+                    MilesAllowed:car_details.MilesAllowed,
+                    RatePerDay:car_details.RatePerDay,
+                    Pickup:car_details.Pickup,
+                    AdditionalMilePrice:car_details.AdditionalMilePrice,
+                    TripFee:tripFee,
+                    daysCalculated:this.state.daysCalculated,
+                    startDate:this.state.startDate,
+                    endDate:this.state.endDate,
+                    startDay:startDay,
+                    startMonth:startMonth1,
+                    endDay:endDay,
+                    endMonth:endMonth1,
+                }
+            })
+        }
     render()
     {
         let car_details=this.props.navigation.state.params;
         return(
+        <View style={{flex:1}}>
         <ScrollView>
         <View>
             <Cards style={{margin:10}}>
@@ -119,11 +200,13 @@ export default class SelectedCar extends Component{
                     } } // optional 
                     centerAlign // optional text will align center or not
                     allowFontScaling = {false} // optional
-                    placeholder={'Apr 27, 2018 → Jul 10, 2018'}
+                    placeholder={'Select Trip Dates'}
                     mode={'range'}
+                    onConfirm = {this.setDates}
                     selectedBgColor="#800080"
                     selectedTextColor={theme.COLORS.BLACK}
                     customButton = {this.customButton}
+                    markText='Pick Your Trip Dates'
                     
                     />
                     
@@ -273,17 +356,21 @@ export default class SelectedCar extends Component{
                     <View>
                         <Text style={{ fontSize: 12 }}>50 Trips Completed</Text>
                     </View>
-
                 </View>
                 </View>
                 </View>
-
-                
-                
             </Cards>
+         </View>
+        </ScrollView>
+        <View style={{backgroundColor:'#800080'}}>
+            <TouchableHighlight onPress={onPress=()=>this.showAlert1()}>
+            <View style={{padding:10}}>
+            <Text style={{alignSelf:'center',fontSize:16,fontWeight: '700',color:'white'}}>Go to checkout</Text>
+            </View>
+            </TouchableHighlight>
             
         </View>
-        </ScrollView>
+        </View>
             
         );
     }

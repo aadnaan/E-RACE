@@ -1,4 +1,6 @@
 import firebase from 'firebase';
+import 'firebase/firestore';
+import '@firebase/database';
 const Config={
     apiKey: "AIzaSyCbPyme_Fw8kRC2XhylIvIJbay8i51vews",
     authDomain: "erace-fac4e.firebaseapp.com",
@@ -13,3 +15,4 @@ export const f=firebase;
 export const database=firebase.database();
 export const auth=firebase.auth();
 export const storage=firebase.storage();
+export const firestore=firebase.firestore();

@@ -5,7 +5,7 @@ import { Input, Block } from 'galio-framework';
 import { theme, withGalio, GalioProvider,Icon} from 'galio-framework';
 import { FontAwesome,Ionicons,MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import VehicleList from "../Components/VehicleList";
-import {f,auth,database,storage} from '../config/Config.js'
+import {f,auth,database,storage,firestore} from '../config/Config.js'
  
 export default class Home extends Component{
     constructor(props){
@@ -23,44 +23,6 @@ export default class Home extends Component{
         this.setState({
             loading:false
         })
-
-    }
-    
-    
-    addToFlatList2(car_feed,carobj,eta,list1){
-        var that = this;
-        database.ref('users').child(carobj.listerID).once('value').then(function(snapshot2){
-            const exists=(snapshot2.val()!==null);
-            if(exists) peta=snapshot2.val();
-            car_feed.push({
-                Lister:peta.Name,
-                ID:list1,
-                URL:[carobj.PhotoURL1,carobj.PhotoURL2],
-                Thumbnail:carobj.PhotoURL1,
-                Model:eta.Model,
-                Brand:eta.Brand,
-                Variant:eta.Variant,
-                Year:eta.Year,
-                Doors:eta.Doors,
-                Seats:eta.Seats,
-                Transmission:eta.Transmission,
-                Regno:eta.Regno,
-                Rating:eta.Rating,
-                NoOfTrips:eta.NoOfTrips,
-                MilesAllowed:carobj.MilesAllowed,
-                RatePerDay:carobj.RatePerDay,
-                Pickup:carobj.Pickup,
-                AdditionalMilePrice:carobj.AdditionalMilePrice,
-                PetrolMilesPerLitre:carobj.PetrolMilesPerLitre,
-                CNGMilesPerKG:carobj.CNGMilesPerKG,
-                Description:carobj.Description
-
-            });
-            that.setState({
-                refresh:false,
-                loading:false,
-            })
-        }).catch(error=>console.log(error));
     }
     searchHandler=()=>{
         this.props.navigation.navigate({
@@ -94,15 +56,43 @@ export default class Home extends Component{
             }
         })
     }
-    addToFlatList=(car_feed,data,list1)=>{
+    addToFlatList1=(car_feed,data)=>{
         var that=this;
-        var carobj=data[list1];
-        database.ref('cars').child(carobj.carlisted).once('value').then(function(snapshot1){
-            const exists=(snapshot1.val()!==null);
-            if(exists) eta=snapshot1.val()
-            that.addToFlatList2(car_feed,carobj,eta,list1)
-        
-        }).catch(error=>console.log(error));
+        firestore.collection('Users').doc(data.UserID).get().then(doc=>{
+            const exists=(doc.data()!==null)
+            if(exists){
+            userdetail=doc.data()
+            const count = Number(data.Rating)
+            car_feed.push({
+                Lister:userdetail.Name,
+                ID:data.UserID,
+                URL:[data.PhotoURL1,data.PhotoURL2],
+                Thumbnail:data.PhotoURL1,
+                Model:data.Model,
+                Brand:data.Brand,
+                Variant:data.Variant,
+                Year:data.Year,
+                Doors:data.Doors,
+                Seats:data.Seats,
+                Transmission:data.Transmission,
+                Regno:data.Regno,
+                Rating:count,
+                NoOfTrips:data.NoOfTrips,
+                MilesAllowed:data.MilesAllowed,
+                RatePerDay:data.RatePerDay,
+                Pickup:data.Pickup,
+                AdditionalMilePrice:data.AdditionalMilePrice,
+                PetrolMilesPerLitre:data.PetrolMilesPerLitre,
+                CNGMilesPerKG:data.CNGMilesPerKG,
+                Description:data.Description
+
+            });
+            that.setState({
+                refresh:false,
+                loading:false,
+            })          
+        }
+    })
     }
     loadcarlist=()=>{
         this.setState({
@@ -110,14 +100,16 @@ export default class Home extends Component{
             car_list:[]
         });
         var that=this;
-        database.ref('listings').once('value').then(function(snapshot){
-            const exists=(snapshot.val()!==null);
-            if(exists) data=snapshot.val();
+        firestore.collection('Cars').get().then((snapshot)=>{
+            snapshot.docs.forEach(doc => {
+                const exists=(doc.data()!==null)
+                if(exists){
+                data=doc.data();
                 var car_feed=that.state.car_list;
-                for(var list1 in data){
-                    that.addToFlatList(car_feed,data,list1);
+                that.addToFlatList1(car_feed,data)
                 }
-        }).catch(error=>console.log(error));
+            })
+        })
     }
     loadNew=()=>{
         this.loadcarlist();
