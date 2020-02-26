@@ -20,6 +20,7 @@ export default class RequestList extends Component{
 
     render()
     {
+        const {Thumbnail}=this.props
 
         return(
                 
@@ -30,7 +31,7 @@ export default class RequestList extends Component{
                     <View style={{flexDirection : "row",justifyContent:'space-between',marginRight:10}} >
                     <View style={{flexDirection : "row"}}>
                     <View style={styles.profileImgContainer}>
-                    <Image source={{ uri:"https://www.t-nation.com/system/publishing/articles/10005529/original/6-Reasons-You-Should-Never-Open-a-Gym.png" }} style={styles.profileImg} />
+                    <Image source={{ uri:Thumbnail }} style={styles.profileImg} />
                     </View>
                     <View style={{marginVertical:4,marginHorizontal:4}}>
                         <Text style={{ fontSize: 12, fontWeight: '500' }}>{this.props.Renter}<Text style={{ fontSize: 12, fontWeight: '400',color:'#800080' }}>'s request for</Text></Text>

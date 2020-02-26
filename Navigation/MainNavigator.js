@@ -10,6 +10,9 @@ import ListYourCar from '../Screens/ListYourCar';
 import Requests from '../Screens/Requests';
 import TripsScreen from '../Screens/TripsScreen';
 import BookingDetails from '../Screens/BookingDetails';
+import RequestDetail from '../Screens/RequestDetail';
+import RentedDetailsScreen from '../Screens/RentedDetailsScreen';
+import BookedDetailsScreen from '../Screens/BookedDetailsScreen'
 
 const RequestNavigator=createStackNavigator({
   First:{
@@ -17,7 +20,14 @@ const RequestNavigator=createStackNavigator({
     navigationOptions:{
       headerTitle:'Booking Requests',
       headerTitleStyle: {},
-    }
+    },
+  },
+  Second:{
+    screen:RequestDetail,
+    navigationOptions:{
+      headerTitle:'Request Details',
+      headerTitleStyle: {},
+    },
   }
 },{initialRouteName:'First',headerLayoutPreset: 'center'})
 const CompletedTripsNavigator=createStackNavigator({
@@ -27,6 +37,22 @@ const CompletedTripsNavigator=createStackNavigator({
       headerTitle:'Completed Trips',
       headerTitleStyle: {},
     }
+  },
+  Second:{
+    screen:BookedDetailsScreen,
+    navigationOptions:{
+      headerTitle:'Trip Details',
+      headerTitleStyle: {},
+    }
+
+  },
+  Third:{
+    screen:RentedDetailsScreen,
+    navigationOptions:{
+      headerTitle:'Trip Details',
+      headerTitleStyle: {},
+    }
+
   }
 },{initialRouteName:'First',headerLayoutPreset: 'center'})
 const HomeNavigator = createStackNavigator({
@@ -59,6 +85,11 @@ const HomeNavigator = createStackNavigator({
   
 },{initialRouteName:'First',headerLayoutPreset: 'center'});
 HomeNavigator.navigationOptions = ({ navigation }) => {
+  return {
+    tabBarVisible: navigation.state.index === 0,
+  };
+};
+RequestNavigator.navigationOptions = ({ navigation }) => {
   return {
     tabBarVisible: navigation.state.index === 0,
   };

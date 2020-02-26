@@ -59,41 +59,62 @@ export default class Requests extends Component{
             return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';   
         }
     }
+    addToFlatList2(bookingRequest_feed,data,userdetail){
+        var that=this
+        firestore.collection('Cars').doc(data.ListingID).get().then(doc=>{
+            const exists=(doc.data()!=null)
+            if(exists){
+                car_details=doc.data()
+                var startDay=new Date(data.StartDate).getDate()
+                var startMonth=new Date(data.StartDate).getMonth()
+                var endDay=new Date(data.EndDate).getDate()
+                var endMonth=new Date(data.EndDate).getMonth()
+                var Months = ["Jan", "Feb", "Mar","Apr", "May", "Jun","Jul", "Aug", "Sept","Oct", "Nov", "Dec"];
+                var startMonth1=Months[startMonth]
+                var endMonth1=Months[endMonth]
+                var timestamp=this.timeDifference(new Date().getTime(),data.TimeStamp)
+                bookingRequest_feed.push({
+                    Renter:userdetail.Name,
+                    ID:data.UserID,
+                    Thumbnail:data.RenterProfilePhoto,
+                    Model:car_details.Model,
+                    Brand:car_details.Brand,
+                    Variant:car_details.Variant,
+                    Year:car_details.Year,
+                    daysCalculated:data.daysCalculated,
+                    startMonth:startMonth1,
+                    endMonth:endMonth1,
+                    startDay:startDay,
+                    endDay:endDay,
+                    Status:data.Status,
+                    TimeStamp:timestamp,
+                    CarPricePerDay:data.CarPricePerDay,
+                    AdditionalMiles:data.AdditionalMiles,
+                    LicenseNo:userdetail.LicenseNo,
+                    FullName:userdetail.FullName,
+                    NoOfUserTrips:userdetail.NoOfUserTrips,
+                    DetailsPhotoURL:car_details.PhotoURL1,
+                    AdditionalMilePrice:car_details.AdditionalMilePrice,
+                    Regno:car_details.Regno,
+                    DescriptionOfTrip:data.DescriptionOfTrip
+
+                });
+                that.setState({
+                    refresh:false,
+                    loading:false,
+                })  
+
+            }
+        })
+    }
     addToFlatList1(bookingRequest_feed,data){
         var that=this;
         firestore.collection('Users').doc(data.RenterID).get().then(doc=>{
             const exists=(doc.data()!==null)
             if(exists){
-            userdetail=doc.data()
-            var startDay=new Date(data.StartDate).getDate()
-            var startMonth=new Date(data.StartDate).getMonth()
-            var endDay=new Date(data.EndDate).getDate()
-            var endMonth=new Date(data.EndDate).getMonth()
-            var Months = ["Jan", "Feb", "Mar","Apr", "May", "Jun","Jul", "Aug", "Sept","Oct", "Nov", "Dec"];
-            var startMonth1=Months[startMonth]
-            var endMonth1=Months[endMonth]
-            var timestamp=this.timeDifference(new Date().getTime(),data.TimeStamp)
-            bookingRequest_feed.push({
-                Renter:userdetail.Name,
-                ID:data.UserID,
-                Thumbnail:data.RenterProfilePhoto,
-                Model:data.Model,
-                Brand:data.Brand,
-                Variant:data.Variant,
-                Year:data.Year,
-                daysCalculated:data.daysCalculated,
-                startMonth:startMonth1,
-                endMonth:endMonth1,
-                startDay:startDay,
-                endDay:endDay,
-                Status:data.Status,
-                TimeStamp:timestamp
-            });
-            that.setState({
-                refresh:false,
-                loading:false,
-            })          
-        }
+                userdetail=doc.data()
+                that.addToFlatList2(bookingRequest_feed,data,userdetail)        
+            }
     })
 
     }
@@ -117,6 +138,35 @@ export default class Requests extends Component{
             })
         })
     }
+    requestSelectedHandler(item){
+        this.props.navigation.navigate({
+            routeName:'Second',
+            params:{
+                Renter:item.Renter,
+                ID:item.ID,
+                Model:item.Model,
+                Brand:item.Brand,
+                Variant:item.Variant,
+                Year:item.Year,
+                daysCalculated:item.daysCalculated,
+                startMonth:item.startMonth,
+                endMonth:item.endMonth,
+                startDay:item.startDay,
+                endDay:item.endDay,
+                CarPricePerDay:item.CarPricePerDay,
+                AdditionalMiles:item.AdditionalMiles,
+                LicenseNo:item.LicenseNo,
+                FullName:item.FullName,
+                NoOfUserTrips:item.NoOfUserTrips,
+                DetailsPhotoURL:item.DetailsPhotoURL,
+                AdditionalMilePrice:item.AdditionalMilePrice,
+                Regno:item.Regno,
+                Thumbnail:item.Thumbnail,
+                DescriptionOfTrip:item.DescriptionOfTrip
+            }
+        })
+
+    }
 
     render()
     {
@@ -130,8 +180,10 @@ export default class Requests extends Component{
                     contentContainerStyle={{paddingBottom:50}}
                     keyExtractor={(item,index)=>index.toString()}
                     renderItem={({item,index})=>(
-                        <TouchableHighlight>
-                            <RequestList Renter={item.Renter} 
+                        <TouchableHighlight onPress={()=>this.requestSelectedHandler(item)}>
+                            <RequestList 
+                            Thumbnail={item.Thumbnail}
+                            Renter={item.Renter} 
                             Brand={item.Brand} 
                             Model={item.Model} 
                             Variant={item.Variant} 
