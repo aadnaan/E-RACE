@@ -5,11 +5,23 @@ import { Rating } from 'react-native-elements';
 import { StrictMode } from 'react';
 import { MaterialCommunityIcons,FontAwesome5,FontAwesome,Ionicons,MaterialIcons, AntDesign,Entypo } from '@expo/vector-icons';
 import { RadioButton } from 'react-native-paper';
+import { Button } from 'react-native-elements'
 
 export default class RequestDetails extends Component{
 
     componentDidMount(){
        
+    }
+    chatHandler(){
+        console.log(this.props.navigation.state.params.Lister)
+        this.props.navigation.navigate({
+            routeName:'Third',
+            params:{
+                ListerID:this.props.navigation.state.params.Lister,
+                RenterID:this.props.navigation.state.params.Renter,
+                RenterName:this.props.navigation.state.params.FullName
+            }
+        })
     }
 
     render()
@@ -93,6 +105,20 @@ export default class RequestDetails extends Component{
                             <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:30,paddingTop:5}}>
                             <Text style={{fontSize:15,fontWeight:'600'}}>Trip Total</Text>
                             <Text style={{fontSize:15,fontWeight:'600'}}>Rs.<Text style={{fontSize:15,fontWeight:'600'}}>{(parseInt(Request_Details.daysCalculated)*(parseInt(Request_Details.CarPricePerDay)+(parseInt(Request_Details.CarPricePerDay)*0.1)))+(parseInt(Request_Details.AdditionalMiles)*parseInt(Request_Details.AdditionalMilePrice))}</Text></Text>
+                            </View>
+                            <View
+                            style={{
+                                margin:18,
+                                width:'95%',
+                                alignSelf:'center',
+                                borderBottomColor: 'grey',
+                                borderBottomWidth: 1,
+                            }}/>
+                            <View style={{marginHorizontal:10,paddingHorizontal:10,flexDirection:'row',justifyContent:'space-between'}}>
+                                <Text style={{fontSize:14,fontWeight:'500'}}>Chat with <Text>{Request_Details.FullName}</Text></Text>
+                                <TouchableHighlight onPress={()=>this.chatHandler()}>
+                                    <AntDesign name="wechat" color={'#800080'} size={30} style={{}} />
+                                </TouchableHighlight>
                             </View>
                             <View
                             style={{

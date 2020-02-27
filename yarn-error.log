@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\User\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-tab-view 2.11.0
+  C:\Program Files\nodejs\node.exe C:\Users\User\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-
 
 PATH: 
-  C:\Users\User\AppData\Roaming\npm;C:\Program Files\Git\cmd;C:\Python\Python37-32\Scripts\;C:\Python\Python37-32\;C:\Users\User\AppData\Local\Microsoft\WindowsApps;C:\Users\User\AppData\Local\Android\Sdk\platform-tools;C:\Users\User\AppData\Local\Android\Sdk\tools;C:\Users\User\AppData\Roaming\npm;C:\OpenSSL-Win64\bin;C:\Program Files\nodejs;E:\;C:\Windows\System32\;C:\Users\User\AppData\Local\Programs\Microsoft VS Code\bin
+  C:\Users\User\AppData\Roaming\npm;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Python\Python37-32\Scripts\;C:\Python\Python37-32\;C:\Users\User\AppData\Local\Microsoft\WindowsApps;C:\Users\User\AppData\Local\Android\Sdk\platform-tools;C:\Users\User\AppData\Local\Android\Sdk\tools;C:\Users\User\AppData\Roaming\npm;C:\OpenSSL-Win64\bin;C:\Program Files\nodejs;E:\;C:\Windows\System32\;C:\Users\User\AppData\Local\Programs\Microsoft VS Code\bin
 
 Yarn version: 
   1.19.0
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/2.11.0: Not found
+  Error: https://registry.yarnpkg.com/react-native-: Not found
       at Request.params.callback [as _callback] (C:\Users\User\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66918:18)
       at Request.self.callback (C:\Users\User\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140539:22)
       at Request.emit (events.js:198:13)
@@ -46,14 +46,19 @@ npm manifest:
       "react": "16.8.3",
       "react-dom": "16.8.3",
       "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
+      "react-native-counters": "^0.0.1",
       "react-native-date-ranges": "^2.5.0",
+      "react-native-easy-chat-ui": "^0.4.6",
       "react-native-elements": "^1.2.7",
+      "react-native-fs": "^2.16.6",
       "react-native-gesture-handler": "~1.3.0",
       "react-native-image-slider-box": "^1.0.5",
       "react-native-paper": "^3.5.1",
+      "react-native-range-datepicker": "^1.9.1",
       "react-native-reanimated": "~1.2.0",
       "react-native-snap-carousel": "^3.8.4",
-      "react-native-tab-view": "^2.13.0",
+      "react-native-sound": "^0.11.0",
+      "react-native-tab-view": "2.11.0",
       "react-native-web": "^0.11.7",
       "react-navigation": "^4.0.10",
       "react-navigation-stack": "^1.10.3",
@@ -1721,6 +1726,11 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
     integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
+  
+  base-64@^0.1.0:
+    version "0.1.0"
+    resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
+    integrity sha1-eAqZyE59YAJgNhURxId2E78k9rs=
   
   base64-js@^1.1.2, base64-js@^1.2.3:
     version "1.3.1"
@@ -4258,7 +4268,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/moment-range/-/moment-range-2.2.0.tgz#b02575778a4ac50a65777939f5c5d757f83fcd85"
     integrity sha1-sCV1d4pKxQpld3k59cXXV/g/zYU=
   
-  moment@^2.22.1:
+  moment@^2.17.1, moment@^2.22.1, moment@^2.22.2:
     version "2.24.0"
     resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
     integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
@@ -5053,6 +5063,13 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-3.0.1.tgz#5b07b61cbd290168cd3c3662e017ebe0f356d2ca"
     integrity sha512-vbcYxPZlpF5f39GAEUF8kuGQqCNeD3E6zEdvtOq8oCGZunHXlWlKgAS6dgBKCvsHvXgHuMtpvs39VgOp8DaKig==
   
+  react-native-counters@^0.0.1:
+    version "0.0.1"
+    resolved "https://registry.yarnpkg.com/react-native-counters/-/react-native-counters-0.0.1.tgz#d2de448c6e1561adff4d6109f23bde6c4a72a8fa"
+    integrity sha512-k2NpCJcHatrvM259+uUD2qAhq3iFLH9onCBKcXgLUrKd+FwiRXlq6vz6Th/1lUiWjjnnYT/gLtTbnho3tJui/Q==
+    dependencies:
+      prop-types "^15.6.2"
+  
   react-native-date-ranges@^2.5.0:
     version "2.5.0"
     resolved "https://registry.yarnpkg.com/react-native-date-ranges/-/react-native-date-ranges-2.5.0.tgz#aab58a3351606ce7a8a35a12e7d1c4e00db4a75d"
@@ -5070,6 +5087,13 @@ Lockfile:
     dependencies:
       prop-types "^15.5.8"
       tween-functions "^1.0.1"
+  
+  react-native-easy-chat-ui@^0.4.6:
+    version "0.4.6"
+    resolved "https://registry.yarnpkg.com/react-native-easy-chat-ui/-/react-native-easy-chat-ui-0.4.6.tgz#22adbf186a2c72901c300dc117843b3e14b3a476"
+    integrity sha512-aAWQDbV3FBfcYMuCD8iZ5HoNW5KFvIESRMZ0dD5QgMj0XA0ifO2qGXLk/ZEnQKCMCKn/2CjMlhxStTcJJxTtSw==
+    dependencies:
+      moment "^2.22.2"
   
   react-native-easy-grid@0.2.2:
     version "0.2.2"
@@ -5091,6 +5115,14 @@ Lockfile:
       prop-types "^15.7.2"
       react-native-ratings "^6.3.0"
       react-native-status-bar-height "^2.2.0"
+  
+  react-native-fs@^2.16.6:
+    version "2.16.6"
+    resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.16.6.tgz#2901789a43210a35a0ef0a098019bbef3af395fd"
+    integrity sha512-ZWOooD1AuFoAGY3HS2GY7Qx2LZo4oIg6AK0wbC68detxwvX75R/q9lRqThXNKP6vIo2VHWa0fYUo/SrLw80E8w==
+    dependencies:
+      base-64 "^0.1.0"
+      utf8 "^3.0.0"
   
   react-native-gesture-handler@~1.3.0:
     version "1.3.0"
@@ -5130,6 +5162,14 @@ Lockfile:
       color "^3.1.2"
       react-native-safe-area-view "^0.14.6"
   
+  react-native-range-datepicker@^1.9.1:
+    version "1.9.1"
+    resolved "https://registry.yarnpkg.com/react-native-range-datepicker/-/react-native-range-datepicker-1.9.1.tgz#bb01f0aa850cbc965cc12420b40abc66f2c7a78f"
+    integrity sha512-CIhTbenWyOo30R6UiuvQdM2giaRHQorhu7ML7tQDFcGiukamCFNn+jT+FDC9dBbDPuByAIY9nWFAJu+8D9fVWg==
+    dependencies:
+      moment "^2.17.1"
+      prop-types "^15.6.0"
+  
   react-native-ratings@^6.3.0:
     version "6.5.0"
     resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-6.5.0.tgz#a1606ccba3c5b54eec8e6cfa4765a45cf0e4ab8d"
@@ -5165,20 +5205,20 @@ Lockfile:
       prop-types "^15.6.1"
       react-addons-shallow-compare "15.6.2"
   
+  react-native-sound@^0.11.0:
+    version "0.11.0"
+    resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.11.0.tgz#ad60b55ba8c6dc89917f381ad3713f2738de530f"
+    integrity sha512-4bGAZfni6E2L695NQjOZwNLBQGXgBGYC4Sy+h99K5h0HqNZjCqR0+aLel+ezASxEJDpaH83gylNObXpiqJgdwg==
+  
   react-native-status-bar-height@^2.2.0:
     version "2.4.0"
     resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.4.0.tgz#de8cee4bb733a196167210d2d0bc1fa10acba3e3"
     integrity sha512-pWvZFlyIHiuxLugLioq97vXiaGSovFXEyxt76wQtbq0gxv4dGXMPqYow46UmpwOgeJpBhqL1E0EKxnfJRrFz5w==
   
-  react-native-tab-view@^2.11.0:
+  react-native-tab-view@2.11.0, react-native-tab-view@^2.11.0:
     version "2.11.0"
     resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.11.0.tgz#2e57d1f617ccc88c7f452708804f3409f880b700"
     integrity sha512-vqetlxGO7A8bnqvXcB50MWpRZAImXFrDGz1WCQKdCqe03Ey3ZzENe7yLuWrtBJYlepGfOLAsmCXv+wW82Yfm1w==
-  
-  react-native-tab-view@^2.13.0:
-    version "2.13.0"
-    resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.13.0.tgz#23037aa43b0f8f682ddc20415a4baaaf6f82ae8f"
-    integrity sha512-AeYbp/u91+D/C9+PmVEPBmFb3ixv8IkLMC3Sc5MajJ/fg0Zl3Of+BcEknBvTnKoe7Fj2y8+Qf9zorBbh5xzh4A==
   
   react-native-vector-icons@^6.6.0:
     version "6.6.0"
@@ -6228,6 +6268,11 @@ Lockfile:
     version "3.1.1"
     resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
     integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
+  
+  utf8@^3.0.0:
+    version "3.0.0"
+    resolved "https://registry.yarnpkg.com/utf8/-/utf8-3.0.0.tgz#f052eed1364d696e769ef058b183df88c87f69d1"
+    integrity sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==
   
   util-deprecate@~1.0.1:
     version "1.0.2"

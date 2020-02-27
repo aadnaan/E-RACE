@@ -75,7 +75,8 @@ export default class Requests extends Component{
                 var timestamp=this.timeDifference(new Date().getTime(),data.TimeStamp)
                 bookingRequest_feed.push({
                     Renter:userdetail.Name,
-                    ID:data.UserID,
+                    ID:data.ListerID,
+                    ID2:data.RenterID,
                     Thumbnail:data.RenterProfilePhoto,
                     Model:car_details.Model,
                     Brand:car_details.Brand,
@@ -143,7 +144,8 @@ export default class Requests extends Component{
             routeName:'Second',
             params:{
                 Renter:item.Renter,
-                ID:item.ID,
+                Lister:item.ID,
+                Renter:item.ID2,
                 Model:item.Model,
                 Brand:item.Brand,
                 Variant:item.Variant,

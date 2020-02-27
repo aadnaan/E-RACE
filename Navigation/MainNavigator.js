@@ -12,7 +12,8 @@ import TripsScreen from '../Screens/TripsScreen';
 import BookingDetails from '../Screens/BookingDetails';
 import RequestDetail from '../Screens/RequestDetail';
 import RentedDetailsScreen from '../Screens/RentedDetailsScreen';
-import BookedDetailsScreen from '../Screens/BookedDetailsScreen'
+import BookedDetailsScreen from '../Screens/BookedDetailsScreen';
+import Chat from '../Screens/Chat'
 
 const RequestNavigator=createStackNavigator({
   First:{
@@ -28,6 +29,9 @@ const RequestNavigator=createStackNavigator({
       headerTitle:'Request Details',
       headerTitleStyle: {},
     },
+  },
+  Third:{
+    screen: Chat
   }
 },{initialRouteName:'First',headerLayoutPreset: 'center'})
 const CompletedTripsNavigator=createStackNavigator({
@@ -99,9 +103,9 @@ export const TabNavigator = createBottomTabNavigator({
   List: { screen: ListYourCar },
   Profile: { screen: ProfileScreen },
   Requests:{screen:RequestNavigator},
-  CompletedTrips:{screen:CompletedTripsNavigator}
+  Trips:{screen:CompletedTripsNavigator}
 }, {
-  order: ['Home', 'List','Requests','CompletedTrips','Profile'],
+  order: ['Home', 'List','Requests','Trips','Profile'],
   initialRouteName: 'Home',
   tabBarOptions: {
     activeTintColor: '#e91e63',

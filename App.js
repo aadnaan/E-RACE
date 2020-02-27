@@ -13,6 +13,7 @@ import ListedTrips from './Components/ListedTrips';
 import BookedDetailsScreen from './Screens/BookedDetailsScreen';
 import RentedDetailsScreen from './Screens/RentedDetailsScreen';
 import RequestDetail from './Screens/RequestDetail';
+import Chat from './Screens/Chat'
 
 
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -61,6 +62,7 @@ export default function App() {
       //<TripsScreen/>
       //<BookedDetailsScreen/>
       //<RentedDetailsScreen/>
+      //<Chat/>
     );
     }
   
