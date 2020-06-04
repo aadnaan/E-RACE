@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import MapView from "react-native-maps";
 import { Marker } from "react-native-maps";
 
@@ -57,6 +57,39 @@ export default class MapScreen extends Component {
       }
     });
   }
+  markerSelectedHandler(marker) {
+    this.state.markedcar_list.forEach(item => {
+      if (item.doc === marker.id) {
+        this.props.navigation.navigate({
+          routeName: "Second",
+          params: {
+            Lister: item.Lister,
+            ID: item.ID,
+            URL: item.URL,
+            Model: item.Model,
+            Brand: item.Brand,
+            Variant: item.Variant,
+            Year: item.Year,
+            Doors: item.Doors,
+            Seats: item.Seats,
+            Transmission: item.Transmission,
+            Regno: item.Regno,
+            Rating: item.Rating,
+            NoOfTrips: item.NoOfTrips,
+            MilesAllowed: item.MilesAllowed,
+            RatePerDay: item.RatePerDay,
+            Pickup: item.Pickup,
+            AdditionalMilePrice: item.AdditionalMilePrice,
+            CNGMilesPerKG: item.CNGMilesPerKG,
+            PetrolMilesPerLitre: item.PetrolMilesPerLitre,
+            Description: item.Description,
+            Latitude: item.latitude,
+            Longitude: item.longitude
+          }
+        });
+      }
+    });
+  }
   async onRegionChangeComplete(region) {
     await this.setState({ region });
   }
@@ -66,6 +99,13 @@ export default class MapScreen extends Component {
       <View style={{ flex: 1 }}>
         {this.state.region["latitude"] ? (
           <View style={styles.container}>
+            <Image
+              style={{ opacity: 0 }}
+              source={{
+                uri:
+                  "https://firebasestorage.googleapis.com/v0/b/erace-fac4e.appspot.com/o/Images%2Fcar.png?alt=media&token=b1bcdb5a-4924-49af-bcab-186158db320b"
+              }}
+            />
             <MapView
               region={this.state.region}
               onRegionChangeComplete={this.onRegionChangeComplete}
@@ -78,6 +118,12 @@ export default class MapScreen extends Component {
                     coordinate={marker.latlng}
                     title={marker.title}
                     description={marker.description}
+                    image={
+                      "https://firebasestorage.googleapis.com/v0/b/erace-fac4e.appspot.com/o/Images%2Fcar.png?alt=media&token=b1bcdb5a-4924-49af-bcab-186158db320b"
+                    }
+                    onPress={() => {
+                      this.markerSelectedHandler(marker);
+                    }}
                   />
                 );
               })}

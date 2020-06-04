@@ -18,6 +18,7 @@ import MapScreen from "./Screens/MapScreen";
 import SearchScreen from "./Screens/SearchScreen";
 import RequestSentList from "./Components/RequestSentList";
 import Testauto from "./Screens/Testauto";
+import PinCar from "./Screens/PinCar";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -55,7 +56,8 @@ export default function App() {
     return (
       //<RequestDetail />
       //<BookingDetails/>
-      <MainNavigator />
+      //<MainNavigator />
+      <PinCar />
       //<RequestSentList />
       //<MapScreen />
       //<Testauto />

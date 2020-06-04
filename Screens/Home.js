@@ -231,7 +231,7 @@ export default class Home extends Component {
         });
       });
   }
-  async selectedgetcarsbyloc() {
+  async selectedgetcarsbyloc(next) {
     this.setState({
       carlistloc: [],
       latlist: []
@@ -243,6 +243,9 @@ export default class Home extends Component {
       .where("Latitude", ">", this.state.region.latitude - 0.017)
       .get()
       .then(async snapshot => {
+        if (snapshot.size == 0) {
+          next();
+        }
         await snapshot.docs.forEach(async doc => {
           const exists = doc.data() !== null;
           if (exists) {
@@ -252,6 +255,7 @@ export default class Home extends Component {
           }
         });
       });
+    var itemsprocessed = 0;
     await firestore
       .collection("Cars")
       .where("Longitude", "<", this.state.region.longitude + 0.017)
@@ -274,9 +278,13 @@ export default class Home extends Component {
               await that.addToCurrentlocFlatList1(
                 carlistloc_feed,
                 data,
-                doc.id1
+                doc.id
               );
             }
+            itemsprocessed++;
+          }
+          if (itemsprocessed === snapshot.size) {
+            next();
           }
         });
       });
@@ -399,8 +407,8 @@ export default class Home extends Component {
                       longitudeDelta: 0.017
                     }
                   });
-                  this.selectedgetcarsbyloc().then(() => {
-                    this.carselectedHandler();
+                  this.selectedgetcarsbyloc(() => {
+                    this.placeselectedhandler();
                   });
                 }}
                 query={{
