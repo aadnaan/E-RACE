@@ -7,7 +7,7 @@ import { MaterialCommunityIcons,FontAwesome5,FontAwesome,Ionicons,MaterialIcons,
 import { RadioButton } from 'react-native-paper';
 import { Button } from 'react-native-elements'
 
-export default class RequestDetail extends Component{
+export default class RequestSentDetail extends Component{
 
     componentDidMount(){
        
@@ -18,7 +18,7 @@ export default class RequestDetail extends Component{
             params:{
                 ListerID:this.props.navigation.state.params.Lister,
                 RenterID:this.props.navigation.state.params.Renter,
-                CalledBy:"Lister",
+                CalledBy:"Renter"
             }
         })
     }
@@ -49,7 +49,6 @@ export default class RequestDetail extends Component{
                                             <Rating type={"custom"} startingValue={5} ratingColor={"#800080"} style={{marginHorizontal:2}} imageSize={12} ratingCount={1}/>
                                         </View>
                                         <Text style={{fontSize:12,color:'#800080'}}>Trips: <Text style={{fontSize:12,fontWeight:'500',color:'black'}}>{Request_Details.NoOfUserTrips}</Text></Text>
-                                        <Text style={{fontSize:12,color:'#800080'}}>License no: <Text style={{fontSize:12,fontWeight:'500',color:'black'}}>{Request_Details.LicenseNo}</Text></Text>
                                     </View>
                                 </View>
                                 <View style={{marginTop:3}}>
@@ -118,18 +117,6 @@ export default class RequestDetail extends Component{
                                 <TouchableHighlight onPress={()=>this.chatHandler()}>
                                     <AntDesign name="wechat" color={'#800080'} size={30} style={{}} />
                                 </TouchableHighlight>
-                            </View>
-                            <View
-                            style={{
-                                marginVertical:18,
-                                width:'95%',
-                                alignSelf:'center',
-                                borderBottomColor: 'grey',
-                                borderBottomWidth: 1,
-                            }}/>
-                            <Text style={{fontSize:14,fontWeight:'500'}}>Trip description</Text>
-                            <View style={{alignSelf:'center',marginTop:6 ,width:350}}>
-                                <Text style={{color:'#3c3c3c'}}>{Request_Details.DescriptionOfTrip}</Text>
                             </View>
                         </View>
                     </Cards>
