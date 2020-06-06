@@ -14,7 +14,6 @@ import {
 } from "react-native";
 import Cards from "../Components/Cards";
 import { Rating } from "react-native-elements";
-import { StrictMode } from "react";
 import RequestList from "../Components/RequestList";
 import { TabView, TabBar, SceneMap } from "react-native-tab-view";
 import { f, auth, database, storage, firestore } from "../config/Config.js";
@@ -35,6 +34,7 @@ export default class Requests extends Component {
       refresh1: false,
       loading1: true,
       index: 0,
+      firstload: 0,
       routes: [
         { key: "first", title: "Trips(Booked)" },
         { key: "second", title: "Trips(Listed)" }
@@ -42,9 +42,17 @@ export default class Requests extends Component {
     };
   }
   componentDidMount() {
-    this.loadBookingList();
-    this.loadreqsentlist();
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener("didFocus", () => {
+      this.loadBookingList();
+      this.loadreqsentlist();
+    });
   }
+  componentWillUnmount() {
+    // Remove the event listener before removing the screen from the stack
+    this.focusListener.remove();
+  }
+
   timeDifference(current, previous) {
     var msPerMinute = 60 * 1000;
     var msPerHour = msPerMinute * 60;
@@ -70,7 +78,7 @@ export default class Requests extends Component {
       return "approximately " + Math.round(elapsed / msPerYear) + " years ago";
     }
   }
-  addToFlatList2(bookingRequest_feed, data, userdetail) {
+  addToFlatList2(bookingRequest_feed, data, userdetail, id) {
     var that = this;
     firestore
       .collection("Cars")
@@ -82,8 +90,10 @@ export default class Requests extends Component {
           car_details = doc.data();
           var startDay = new Date(data.StartDate).getDate();
           var startMonth = new Date(data.StartDate).getMonth();
+          var startYear = new Date(data.StartDate).getFullYear();
           var endDay = new Date(data.EndDate).getDate();
           var endMonth = new Date(data.EndDate).getMonth();
+          var endYear = new Date(data.EndDate).getFullYear();
           var Months = [
             "Jan",
             "Feb",
@@ -105,7 +115,21 @@ export default class Requests extends Component {
             data.TimeStamp
           );
           bookingRequest_feed.push({
-            Renter: userdetail.Name,
+            ListingID: data.ListingID,
+            endM: endMonth,
+            endYear: endYear,
+            TripE: data.TripEnd,
+            TripS: data.TripStart,
+            AmountRec: data.AmountReceived,
+            startM: startMonth,
+            startYear: startYear,
+            StartDate: data.StartDate,
+            EndDate: data.EndDate,
+            doc: id,
+            RenterFirstName: data.RenterFirstName,
+            ListerFirstName: data.ListerFirstName,
+            RenterProfilePhoto: data.RenterProfilePhoto,
+            ListerProfilePhoto: data.ListerProfilePhoto,
             ID: data.ListerID,
             ID2: data.RenterID,
             Thumbnail: data.RenterProfilePhoto,
@@ -137,7 +161,7 @@ export default class Requests extends Component {
         }
       });
   }
-  addToReqSentFlatList2(RequestSent_feed, data, userdetail) {
+  addToReqSentFlatList2(RequestSent_feed, data, userdetail, id) {
     var that = this;
     firestore
       .collection("Cars")
@@ -149,8 +173,10 @@ export default class Requests extends Component {
           car_details = doc.data();
           var startDay = new Date(data.StartDate).getDate();
           var startMonth = new Date(data.StartDate).getMonth();
+          var startYear = new Date(data.StartDate).getFullYear();
           var endDay = new Date(data.EndDate).getDate();
           var endMonth = new Date(data.EndDate).getMonth();
+          var endYear = new Date(data.EndDate).getFullYear();
           var Months = [
             "Jan",
             "Feb",
@@ -167,11 +193,22 @@ export default class Requests extends Component {
           ];
           var startMonth1 = Months[startMonth];
           var endMonth1 = Months[endMonth];
-          var timestamp = this.timeDifference(
-            new Date().getTime(),
-            data.TimeStamp
-          );
           RequestSent_feed.push({
+            ListingID: data.ListingID,
+            endM: endMonth,
+            endYear: endYear,
+            TripE: data.TripEnd,
+            TripS: data.TripStart,
+            AmountRec: data.AmountReceived,
+            startM: startMonth,
+            startYear: startYear,
+            StartDate: data.StartDate,
+            EndDate: data.EndDate,
+            doc: id,
+            RenterFirstName: data.RenterFirstName,
+            ListerFirstName: data.ListerFirstName,
+            RenterProfilePhoto: data.RenterProfilePhoto,
+            ListerProfilePhoto: data.ListerProfilePhoto,
             Lister: userdetail.Name,
             ID: data.ListerID,
             ID2: data.RenterID,
@@ -187,7 +224,7 @@ export default class Requests extends Component {
             startDay: startDay,
             endDay: endDay,
             Status: data.Status,
-            TimeStamp: timestamp,
+            TimeStamp: data.TimeStamp,
             CarPricePerDay: data.CarPricePerDay,
             AdditionalMiles: data.AdditionalMiles,
             LicenseNo: userdetail.LicenseNo,
@@ -205,7 +242,7 @@ export default class Requests extends Component {
         }
       });
   }
-  addToFlatList1(bookingRequest_feed, data) {
+  addToFlatList1(bookingRequest_feed, data, id) {
     var that = this;
     firestore
       .collection("Users")
@@ -215,11 +252,11 @@ export default class Requests extends Component {
         const exists = doc.data() !== null;
         if (exists) {
           userdetail = doc.data();
-          that.addToFlatList2(bookingRequest_feed, data, userdetail);
+          that.addToFlatList2(bookingRequest_feed, data, userdetail, id);
         }
       });
   }
-  addToReqSentFlatList1(RequestSent_feed, data) {
+  addToReqSentFlatList1(RequestSent_feed, data, id) {
     var that = this;
     firestore
       .collection("Users")
@@ -229,7 +266,7 @@ export default class Requests extends Component {
         const exists = doc.data() !== null;
         if (exists) {
           userdetail = doc.data();
-          that.addToReqSentFlatList2(RequestSent_feed, data, userdetail);
+          that.addToReqSentFlatList2(RequestSent_feed, data, userdetail, id);
         }
       });
   }
@@ -247,6 +284,12 @@ export default class Requests extends Component {
     var that = this;
     firestore
       .collection("BookingRequests")
+      .where("Status", "in", [
+        "Confirmed",
+        "Pending",
+        "Accepted",
+        "In Progress"
+      ])
       .get()
       .then(snapshot => {
         snapshot.docs.forEach(doc => {
@@ -254,7 +297,7 @@ export default class Requests extends Component {
           if (exists) {
             data = doc.data();
             var RequestSent_feed = that.state.requestSentList;
-            that.addToReqSentFlatList1(RequestSent_feed, data);
+            that.addToReqSentFlatList1(RequestSent_feed, data, doc.id);
           }
         });
       });
@@ -267,6 +310,12 @@ export default class Requests extends Component {
     var that = this;
     firestore
       .collection("BookingRequests")
+      .where("Status", "in", [
+        "Confirmed",
+        "Pending",
+        "Accepted",
+        "In Progress"
+      ])
       .get()
       .then(snapshot => {
         snapshot.docs.forEach(doc => {
@@ -274,15 +323,59 @@ export default class Requests extends Component {
           if (exists) {
             data = doc.data();
             var bookingRequest_feed = that.state.requestList;
-            that.addToFlatList1(bookingRequest_feed, data);
+            that.addToFlatList1(bookingRequest_feed, data, doc.id);
           }
         });
       });
   };
   requestSelectedHandler(item) {
+    var assignstartdate = new Date(
+      parseInt(item.startYear, 10),
+      parseInt(item.startM, 10),
+      parseInt(item.startDay, 10),
+      10,
+      0,
+      0,
+      0
+    );
+
+    var curentdate = new Date();
+    var seconds = (assignstartdate.getTime() - curentdate.getTime()) / 1000;
+    var minutes = seconds / 60;
+    var remmin = minutes % 60;
+
+    var hours = minutes / 60;
+    var assignenddate = new Date(
+      parseInt(item.endYear, 10),
+      parseInt(item.endM, 10),
+      parseInt(item.endDay, 10),
+      10,
+      0,
+      0,
+      0
+    );
+    var seconds1 = (assignenddate.getTime() - curentdate.getTime()) / 1000;
+    var minutes1 = seconds1 / 60;
+    var remmin1 = minutes1 % 60;
+
+    var hours1 = minutes1 / 60;
     this.props.navigation.navigate({
       routeName: "Second",
       params: {
+        ListingID: item.ListingID,
+        Status: item.Status,
+        TripE: item.TripE,
+        TripS: item.TripS,
+        AmountRec: item.AmountRec,
+        leftEndHour: Math.floor(hours1),
+        leftEndMins: Math.floor(remmin1),
+        cancelLeftHour: Math.floor(hours),
+        cancelLeftMins: Math.floor(remmin),
+        doc: item.doc,
+        RenterFirstName: item.RenterFirstName,
+        ListerFirstName: item.ListerFirstName,
+        RenterProfilePhoto: item.RenterProfilePhoto,
+        ListerProfilePhoto: item.ListerProfilePhoto,
         Renter: item.Renter,
         Lister: item.ID,
         Renter: item.ID2,
@@ -309,9 +402,53 @@ export default class Requests extends Component {
     });
   }
   requestSentSelectedHandler(item) {
+    var assignstartdate = new Date(
+      parseInt(item.startYear, 10),
+      parseInt(item.startM, 10),
+      parseInt(item.startDay, 10),
+      10,
+      0,
+      0,
+      0
+    );
+
+    var curentdate = new Date();
+    var seconds = (assignstartdate.getTime() - curentdate.getTime()) / 1000;
+    var minutes = seconds / 60;
+    var remmin = minutes % 60;
+
+    var hours = minutes / 60;
+    var assignenddate = new Date(
+      parseInt(item.endYear, 10),
+      parseInt(item.endM, 10),
+      parseInt(item.endDay, 10),
+      10,
+      0,
+      0,
+      0
+    );
+    var seconds1 = (assignenddate.getTime() - curentdate.getTime()) / 1000;
+    var minutes1 = seconds1 / 60;
+    var remmin1 = minutes1 % 60;
+
+    var hours1 = minutes1 / 60;
     this.props.navigation.navigate({
       routeName: "fourth",
       params: {
+        ListingID: item.ListingID,
+        Status: item.Status,
+        TripE: item.TripE,
+        TripS: item.TripS,
+        AmountRec: item.AmountRec,
+        leftEndHour: Math.floor(hours1),
+        leftEndMins: Math.floor(remmin1),
+        cancelLeftHour: Math.floor(hours),
+        cancelLeftMins: Math.floor(remmin),
+        doc: item.doc,
+        RenterFirstName: item.RenterFirstName,
+        ListerFirstName: item.ListerFirstName,
+        RenterProfilePhoto: item.RenterProfilePhoto,
+        ListerProfilePhoto: item.ListerProfilePhoto,
         Lister: item.Lister,
         Lister: item.ID,
         Renter: item.ID2,
@@ -391,7 +528,7 @@ export default class Requests extends Component {
                 >
                   <RequestList
                     Thumbnail={item.Thumbnail}
-                    Renter={item.Renter}
+                    Renter={item.RenterFirstName}
                     Brand={item.Brand}
                     Model={item.Model}
                     Variant={item.Variant}

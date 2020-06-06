@@ -43,31 +43,6 @@ export default class TripsScreen extends Component {
   loadListedList = () => {
     this.loadNew2();
   };
-  timeDifference(current, previous) {
-    var msPerMinute = 60 * 1000;
-    var msPerHour = msPerMinute * 60;
-    var msPerDay = msPerHour * 24;
-    var msPerMonth = msPerDay * 30;
-    var msPerYear = msPerDay * 365;
-
-    var elapsed = current - previous;
-
-    if (elapsed < msPerMinute) {
-      return Math.round(elapsed / 1000) + " seconds ago";
-    } else if (elapsed < msPerHour) {
-      return Math.round(elapsed / msPerMinute) + " minutes ago";
-    } else if (elapsed < msPerDay) {
-      return Math.round(elapsed / msPerHour) + " hours ago";
-    } else if (elapsed < msPerMonth) {
-      return "approximately " + Math.round(elapsed / msPerDay) + " days ago";
-    } else if (elapsed < msPerYear) {
-      return (
-        "approximately " + Math.round(elapsed / msPerMonth) + " months ago"
-      );
-    } else {
-      return "approximately " + Math.round(elapsed / msPerYear) + " years ago";
-    }
-  }
   addToRentedFlatList2(RentedTrips_feed, data, userdetail) {
     var that = this;
     firestore
@@ -98,10 +73,6 @@ export default class TripsScreen extends Component {
           ];
           var startMonth1 = Months[startMonth];
           var endMonth1 = Months[endMonth];
-          var timestamp = this.timeDifference(
-            new Date().getTime(),
-            data.TimeStamp
-          );
           await RentedTrips_feed.push({
             Renter: userdetail.FullName,
             ID: data.UserID,
@@ -115,7 +86,6 @@ export default class TripsScreen extends Component {
             startDay: startDay,
             endDay: endDay,
             Status: data.Status,
-            TimeStamp: timestamp,
             CarPricePerDay: data.CarPricePerDay,
             AdditionalMiles: data.AdditionalMiles,
             LicenseNo: userdetail.LicenseNo,
@@ -164,10 +134,6 @@ export default class TripsScreen extends Component {
           ];
           var startMonth1 = Months[startMonth];
           var endMonth1 = Months[endMonth];
-          var timestamp = this.timeDifference(
-            new Date().getTime(),
-            data.TimeStamp
-          );
           await ListedTrips_feed.push({
             Thumbnail: data.ListerProfilePhoto,
             Model: car_details.Model,
@@ -179,7 +145,6 @@ export default class TripsScreen extends Component {
             startDay: startDay,
             endDay: endDay,
             Status: data.Status,
-            TimeStamp: timestamp,
             CarPricePerDay: data.CarPricePerDay,
             AdditionalMiles: data.AdditionalMiles,
             LicenseNo: userdetail.LicenseNo,
@@ -344,7 +309,6 @@ export default class TripsScreen extends Component {
                     endDay={item.endDay}
                     DaysCalculated={item.DaysCalculated}
                     Status={item.Status}
-                    TimeStamp={item.TimeStamp}
                     TripTotal={item.TripTotal}
                     key={index}
                   />
@@ -378,7 +342,6 @@ export default class TripsScreen extends Component {
                     endDay={item.endDay}
                     DaysCalculated={item.DaysCalculated}
                     Status={item.Status}
-                    TimeStamp={item.TimeStamp}
                     TripTotal={item.TripTotal}
                     key={index}
                   />

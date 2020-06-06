@@ -56,8 +56,8 @@ export default function App() {
     return (
       //<RequestDetail />
       //<BookingDetails/>
-      //<MainNavigator />
-      <PinCar />
+      <MainNavigator />
+      //<PinCar />
       //<RequestSentList />
       //<MapScreen />
       //<Testauto />

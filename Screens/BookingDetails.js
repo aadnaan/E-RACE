@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text,TextInput,StyleSheet,View ,ImageBackground,Platform,ScrollView,Image} from 'react-native';
+import {Text,TextInput,StyleSheet,View ,ImageBackground,Platform,ScrollView,Image, TouchableHighlight} from 'react-native';
 import Cards from '../Components/Cards';
 import { Rating } from 'react-native-elements';
 import { StrictMode } from 'react';
@@ -7,6 +7,8 @@ import { MaterialCommunityIcons,FontAwesome5,FontAwesome,Ionicons,MaterialIcons,
 import { RadioButton } from 'react-native-paper';
 import Counter from "react-native-counters";
 import Feather from 'react-native-vector-icons/Feather';
+
+import { Button } from 'react-native-elements'
 const minusIcon = (isMinusDisabled, touchableDisabledColor, touchableColor) => {
     return <Feather name='minus' size={20} color={isMinusDisabled ? touchableDisabledColor : touchableColor} />
   };
@@ -18,7 +20,7 @@ export default class BookingDetails extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            checked:'none',
+            checked:'Cash',
             AdditionalMiles:0,
         };
     }
@@ -40,8 +42,8 @@ export default class BookingDetails extends Component{
     const imageUri=bookingDetails.URL[0];
         
     return(
-        
-        <ScrollView>
+        <View style={{flex:1}}>
+        <ScrollView style={{flex:0.96}}>
         <View style={{flex:1}}>
             <Cards style={{margin:10,padding:10}}>
                 <View style={{flexDirection:'row'}}>
@@ -148,6 +150,7 @@ export default class BookingDetails extends Component{
                     <Text style={{fontSize:16,fontWeight:'600',color:'grey',marginTop:3}}>Credit/Debit</Text>
                     </View>
                     <RadioButton
+                        disabled={true}
                         value="Credit/Debit"
                         uncheckedColor="#800080"
                         color="#800080"
@@ -155,19 +158,18 @@ export default class BookingDetails extends Component{
                         onPress={() => { this.setState({ checked: 'Credit/Debit' }); }}
                     />
                     </View>
+                    <Text>Credit/Debit option is not available</Text>
                     </View>
                 </View>
-                {/* <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-                    <Text style={{fontSize:16,fontWeight:'600',color:'grey'}}>500<Text> total miles</Text></Text>
-                    <Text style={{fontSize:16,fontWeight:'600',color:'grey'}}>Rs.<Text style={{fontSize:16,fontWeight:'500'}}>500</Text></Text>
-                </View>
-                <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-                    <Text style={{fontSize:16,fontWeight:'600'}}>Trip Total</Text>
-                    <Text style={{fontSize:16,fontWeight:'600'}}>Rs.<Text style={{fontSize:16,fontWeight:'500'}}>6000</Text></Text>
-                </View> */}
             </Cards>
         </View>
         </ScrollView>
+        <View style={{flexDirection:'row',flex:0.06,justifyContent:"space-evenly",alignItems:"center",backgroundColor:"#D3D3D3"}}>
+        <TouchableHighlight style={{width:"100%",height:"100%",backgroundColor:"#800080",alignItems:"center",justifyContent:"center"}}>
+            <Text style={{color:"#FFFFFF",fontSize:20, fontWeight:"700"}}>Book</Text>
+        </TouchableHighlight>
+        </View>
+        </View>
         );
     }
 }
