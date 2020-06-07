@@ -16,9 +16,8 @@ import RequestDetail from "./Screens/RequestDetail";
 import Chat from "./Screens/Chat";
 import MapScreen from "./Screens/MapScreen";
 import SearchScreen from "./Screens/SearchScreen";
-import RequestSentList from "./Components/RequestSentList";
-import Testauto from "./Screens/Testauto";
-import PinCar from "./Screens/PinCar";
+import ListedCar from "./Components/ListedCar";
+import ListedCarList from "./Screens/ListedCarList";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -56,7 +55,7 @@ export default function App() {
     return (
       //<RequestDetail />
       //<BookingDetails/>
-      <MainNavigator />
+      //<MainNavigator />
       //<PinCar />
       //<RequestSentList />
       //<MapScreen />
@@ -68,6 +67,7 @@ export default function App() {
       //<BookedDetailsScreen/>
       //<RentedDetailsScreen/>
       //<Chat />
+      <ListedCarList />
     );
   }
 }
