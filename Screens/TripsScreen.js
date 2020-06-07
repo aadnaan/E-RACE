@@ -43,7 +43,7 @@ export default class TripsScreen extends Component {
   loadListedList = () => {
     this.loadNew2();
   };
-  addToRentedFlatList2(RentedTrips_feed, data, userdetail) {
+  addToRentedFlatList2(RentedTrips_feed, data, userdetail, id1) {
     var that = this;
     firestore
       .collection("Cars")
@@ -74,6 +74,11 @@ export default class TripsScreen extends Component {
           var startMonth1 = Months[startMonth];
           var endMonth1 = Months[endMonth];
           await RentedTrips_feed.push({
+            docid: id1,
+            ListingID: data.ListingID,
+            BookingRequestID: data.BookingRequestID,
+            RenterID: data.Renter,
+            ListerID: data.Lister,
             Renter: userdetail.FullName,
             ID: data.UserID,
             Thumbnail: data.RenterProfilePhoto,
@@ -104,7 +109,7 @@ export default class TripsScreen extends Component {
         }
       });
   }
-  addToListedFlatList2(ListedTrips_feed, data, userdetail) {
+  addToListedFlatList2(ListedTrips_feed, data, userdetail, id1) {
     var that = this;
     firestore
       .collection("Cars")
@@ -135,6 +140,11 @@ export default class TripsScreen extends Component {
           var startMonth1 = Months[startMonth];
           var endMonth1 = Months[endMonth];
           await ListedTrips_feed.push({
+            docid: id1,
+            ListingID: data.ListingID,
+            BookingRequestID: data.BookingRequestID,
+            RenterID: data.Renter,
+            ListerID: data.Lister,
             Thumbnail: data.ListerProfilePhoto,
             Model: car_details.Model,
             Brand: car_details.Brand,
@@ -163,7 +173,7 @@ export default class TripsScreen extends Component {
         }
       });
   }
-  addToRentedFlatList1(RentedTrips_feed, data) {
+  addToRentedFlatList1(RentedTrips_feed, data, id1) {
     var that = this;
     firestore
       .collection("Users")
@@ -173,11 +183,11 @@ export default class TripsScreen extends Component {
         const exists = doc.data() !== null;
         if (exists) {
           userdetail = doc.data();
-          that.addToRentedFlatList2(RentedTrips_feed, data, userdetail);
+          that.addToRentedFlatList2(RentedTrips_feed, data, userdetail, id1);
         }
       });
   }
-  addToListedFlatList1(ListedTrips_feed, data) {
+  addToListedFlatList1(ListedTrips_feed, data, id1) {
     var that = this;
     firestore
       .collection("Users")
@@ -187,7 +197,7 @@ export default class TripsScreen extends Component {
         const exists = doc.data() !== null;
         if (exists) {
           userdetail = doc.data();
-          that.addToListedFlatList2(ListedTrips_feed, data, userdetail);
+          that.addToListedFlatList2(ListedTrips_feed, data, userdetail, id1);
         }
       });
   }
@@ -205,8 +215,9 @@ export default class TripsScreen extends Component {
           const exists = doc.data() !== null;
           if (exists) {
             data = doc.data();
+            let id1 = doc.id;
             var ListedTrips_feed = that.state.ListedList;
-            that.addToListedFlatList1(ListedTrips_feed, data);
+            that.addToListedFlatList1(ListedTrips_feed, data, id1);
           }
         });
       });
@@ -225,8 +236,9 @@ export default class TripsScreen extends Component {
           const exists = doc.data() !== null;
           if (exists) {
             data = doc.data();
+            let id1 = doc.id;
             var RentedTrips_feed = that.state.RentedList;
-            that.addToRentedFlatList1(RentedTrips_feed, data);
+            that.addToRentedFlatList1(RentedTrips_feed, data, id1);
           }
         });
       });
@@ -235,6 +247,11 @@ export default class TripsScreen extends Component {
     this.props.navigation.navigate({
       routeName: "Third",
       params: {
+        docid: item.docid,
+        ListingID: item.ListingID,
+        BookingRequestID: item.BookingRequestID,
+        RenterID: item.RenterID,
+        ListerID: item.ListerID,
         Model: item.Model,
         Brand: item.Brand,
         Variant: item.Variant,
@@ -259,6 +276,11 @@ export default class TripsScreen extends Component {
     this.props.navigation.navigate({
       routeName: "Second",
       params: {
+        docid: item.docid,
+        ListingID: item.ListingID,
+        BookingRequestID: item.BookingRequestID,
+        RenterID: item.RenterID,
+        ListerID: item.ListerID,
         Model: item.Model,
         Brand: item.Brand,
         Variant: item.Variant,
@@ -283,71 +305,103 @@ export default class TripsScreen extends Component {
   _renderHeader = props => <TabBar {...props} />;
 
   renderScene = ({ route }) => {
+    let status = false;
+    if (this.state.RentedList.length > 0) {
+      status = true;
+    }
+    let status1 = false;
+    if (this.state.ListedList.length > 0) {
+      status1 = true;
+    }
     switch (route.key) {
       case "first":
         return (
           <View style={{ flex: 1, margin: 7 }}>
-            <FlatList
-              refreshing={this.state.refresh}
-              onRefresh={this.loadRentedList}
-              data={this.state.RentedList}
-              contentContainerStyle={{ paddingBottom: 50 }}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item, index }) => (
-                <TouchableHighlight
-                  onPress={() => this.BookedSelectedHandler(item)}
-                >
-                  <BookedTrips
-                    Thumbnail={item.Thumbnail}
-                    Lister={item.FullName}
-                    Model={item.Model}
-                    Variant={item.Variant}
-                    Year={item.Year}
-                    startMonth={item.startMonth}
-                    endMonth={item.endMonth}
-                    startDay={item.startDay}
-                    endDay={item.endDay}
-                    DaysCalculated={item.DaysCalculated}
-                    Status={item.Status}
-                    TripTotal={item.TripTotal}
-                    key={index}
-                  />
-                </TouchableHighlight>
-              )}
-            />
+            {status == true ? (
+              <FlatList
+                refreshing={this.state.refresh}
+                onRefresh={this.loadRentedList}
+                data={this.state.RentedList}
+                contentContainerStyle={{ paddingBottom: 50 }}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => (
+                  <TouchableHighlight
+                    onPress={() => this.BookedSelectedHandler(item)}
+                  >
+                    <BookedTrips
+                      Thumbnail={item.Thumbnail}
+                      Lister={item.FullName}
+                      Model={item.Model}
+                      Variant={item.Variant}
+                      Year={item.Year}
+                      startMonth={item.startMonth}
+                      endMonth={item.endMonth}
+                      startDay={item.startDay}
+                      endDay={item.endDay}
+                      DaysCalculated={item.DaysCalculated}
+                      Status={item.Status}
+                      TripTotal={item.TripTotal}
+                      key={index}
+                    />
+                  </TouchableHighlight>
+                )}
+              />
+            ) : (
+              <View
+                style={{
+                  alignSelf: "center",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text>No completed Trips</Text>
+              </View>
+            )}
           </View>
         );
       case "second":
         return (
           <View style={{ flex: 1, margin: 7 }}>
-            <FlatList
-              refreshing={this.state.refresh1}
-              onRefresh={this.loadListedList}
-              data={this.state.ListedList}
-              contentContainerStyle={{ paddingBottom: 50 }}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item, index }) => (
-                <TouchableHighlight
-                  onPress={() => this.ListedSelectedHandler(item)}
-                >
-                  <ListedTrips
-                    Thumbnail={item.Thumbnail}
-                    Renter={item.FullName}
-                    Model={item.Model}
-                    Variant={item.Variant}
-                    Year={item.Year}
-                    startMonth={item.startMonth}
-                    endMonth={item.endMonth}
-                    startDay={item.startDay}
-                    endDay={item.endDay}
-                    DaysCalculated={item.DaysCalculated}
-                    Status={item.Status}
-                    TripTotal={item.TripTotal}
-                    key={index}
-                  />
-                </TouchableHighlight>
-              )}
-            />
+            {status1 == true ? (
+              <FlatList
+                refreshing={this.state.refresh1}
+                onRefresh={this.loadListedList}
+                data={this.state.ListedList}
+                contentContainerStyle={{ paddingBottom: 50 }}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => (
+                  <TouchableHighlight
+                    onPress={() => this.ListedSelectedHandler(item)}
+                  >
+                    <ListedTrips
+                      Thumbnail={item.Thumbnail}
+                      Renter={item.FullName}
+                      Model={item.Model}
+                      Variant={item.Variant}
+                      Year={item.Year}
+                      startMonth={item.startMonth}
+                      endMonth={item.endMonth}
+                      startDay={item.startDay}
+                      endDay={item.endDay}
+                      DaysCalculated={item.DaysCalculated}
+                      Status={item.Status}
+                      TripTotal={item.TripTotal}
+                      key={index}
+                    />
+                  </TouchableHighlight>
+                )}
+              />
+            ) : (
+              <View
+                style={{
+                  alignSelf: "center",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text>No Completed Trips</Text>
+              </View>
+            )}
           </View>
         );
       default:
